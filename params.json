@@ -1,0 +1,6 @@
+{
+  "name": "Reparing Boolean Networks using ASP",
+  "tagline": "",
+  "body": "# Abstract \r\n***\r\nBla\r\n\r\n***\r\n./Converter type [asynchronous|synchronous] repair[e|i|g|combinations] examples/Model.net [examples/Obs1.obs examples/Obsn.obs]\r\nThis will generete the repair models in the examples folder.\r\n\r\n***\r\nAvailable repair operations:\r\n***\r\n# Authors\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
