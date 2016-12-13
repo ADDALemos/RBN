@@ -32,7 +32,7 @@
 <a id="how-to-run-the-project" class="anchor" href="#how-to-run-the-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to run the project</h1>
 
 <p><code>./Converter type [asynchronous|synchronous] repair[e|i|g|combinations] examples/Model.net [examples/Obs1.obs examples/Obsn.obs]</code>
-This will generete the repair models in the examples folder.</p>
+This will generate the repair models in the examples folder.</p>
 
 <h2>
 <a id="arguments-of-the-program" class="anchor" href="#arguments-of-the-program" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Arguments of the program</h2>
@@ -40,7 +40,7 @@ This will generete the repair models in the examples folder.</p>
 <h3>
 <a id="type" class="anchor" href="#type" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Type:</h3>
 
-<p>If the model is asynchronous or synchronous. For steady state, please consider the synchronous where the time-series has only two columns with the same values.</p>
+<p>If the model is asynchronous or synchronous. For steady state, please consider the synchronous where the time-series have only two columns with the same values.</p>
 
 <h3>
 <a id="available-repair-operations" class="anchor" href="#available-repair-operations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Available repair operations:</h3>
@@ -60,7 +60,7 @@ Note: All the combinations of repairs are allowed, and they need to be written i
 <h3>
 <a id="experimental-values" class="anchor" href="#experimental-values" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Experimental values</h3>
 
-<p>The program can deal with 0 or more observations. The observations correspond to a time-series and is organized in a matrix. As this argument is optional when not present the program will infer the data to minimize the number of repair operations needed.</p>
+<p>The program can deal with 0 or more observations. The observations correspond to a time-series and the time-series is organized in a matrix. As this argument is optional when not present the program will infer the data to minimize the number of repair operations needed.</p>
 
 <hr>
 
@@ -71,7 +71,7 @@ Note: All the combinations of repairs are allowed, and they need to be written i
 
 <p><a href="https://github.com/potassco/clingo">clingo</a></p>
 
-<p>Use the Quince McCluskey algorithm available at:</p>
+<p>Uses the Quince McCluskey algorithm available at:</p>
 
 <p><a href="https://github.com/pfpacket/Quine-McCluskey">Quine-McCluskey</a> (to compile requires the Boost C++ Libraries <a href="http://www.boost.org/">boost.org</a></p>
 
@@ -83,13 +83,13 @@ Note: All the combinations of repairs are allowed, and they need to be written i
 <h3>
 <a id="steady-state" class="anchor" href="#steady-state" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Steady State</h3>
 
-<p>In the folder examples/steady are available two data sets originaly obtain from .
-As the model did not have functions associated with them, all nodes are explained by the same function. Where a node is present if it has at least one activator and has no inbitors.</p>
+<p>In the folder examples/steady two data sets originaly obtained from  are available.
+As the model did not have functions associated with them, all nodes are explained by the same function, where a biological component is present if it has at least one activator and has no inbitors.</p>
 
 <h3>
 <a id="time-series" class="anchor" href="#time-series" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Time-series</h3>
 
-<p>The data sets in the folder examples/time were randomly genereted using the available on the folder scripts. The model was genereted using the script available at <a href="https://github.com/ptgm/BoolNetR2GINsim">BoolNetR2GINsim</a>.</p>
+<p>The data sets in the folder examples/time were randomly genereted using the program available on the folder scripts. The model was generated using the script available at <a href="https://github.com/ptgm/BoolNetR2GINsim">BoolNetR2GINsim</a>.</p>
 
 <hr>
 
