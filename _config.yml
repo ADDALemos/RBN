@@ -1,0 +1,8 @@
+title: Repairing Boolean Networks using ASP
+description: 
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
