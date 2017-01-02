@@ -5,13 +5,13 @@ Bla
 ***
 # How to run the project
 
-`./Converter type [asynchronous|synchronous] repair[e|i|g|combinations] examples/Model.net [examples/Obs1.obs examples/Obsn.obs]`
+`./Converter type [asynchronous|synchronous|steady_state] repair[e|i|g|combinations] examples/Model.net [examples/Obs1.obs examples/Obsn.obs]`
 This will generate the repair models in the examples folder.
 
 ## Arguments of the program
 ### Type:
 
-If the model is asynchronous or synchronous. For steady state, please consider the synchronous where the time-series have only two columns with the same values.
+If the model is asynchronous, synchronous or is in steady state.
 
 ### Available repair operations:
 
@@ -19,7 +19,7 @@ If the model is asynchronous or synchronous. For steady state, please consider t
 * Repair i - negates a regulator
 * Repair g - changes AND function to OR function
 Note: All the combinations of repairs are allowed, and they need to be written in alphabetical order.
-
+Some examples with small networks are available in the folder: `examples/repairs`.
 ### Model
 
 The model has to be encoded in Boolsim ([format](http://www.colomoto.org/formats/boolsim.html)). 
