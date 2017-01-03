@@ -21,7 +21,7 @@ If the model is asynchronous, synchronous or is in steady state.
 
 Note: All the combinations of repairs are allowed, and they need to be written in alphabetical order.
 
-Some examples with small networks are available in the folder: `examples/repairs`, showing the effects of the repair operations.
+Some examples with small networks are available in the folder: `examples/steady/repairs`, showing the effects of the repair operations.
 
 ### Model
 
@@ -45,10 +45,10 @@ Uses the Quince McCluskey algorithm available at:
 ***
 ## Data Sets
 ### Steady State
-In the folder examples/steady two data sets originally obtained from  are available.
+In the folder `examples/steady/ecoli` two data sets originally obtained from  are available.
 As the model did not have functions associated with them, all nodes are explained by the same function, where a biological component is present if it has at least one activator and has no inhibitors.
 ### Time-series
-The data sets in the folder examples/time were randomly generated using the program available on the folder scripts. The model was generated using the script available at [BoolNetR2GINsim](https://github.com/ptgm/BoolNetR2GINsim).
+The data sets in the folder `examples/time` were randomly generated using the program available on the folder scripts. The model was generated using the script available at [BoolNetR2GINsim](https://github.com/ptgm/BoolNetR2GINsim).
 ***
 # Authors
 Alexandre Lemos, [Pedro T. Monteiro](http://pedromonteiro.org/) and [Inês Lynce](http://sat.inesc-id.pt/~ines/).
