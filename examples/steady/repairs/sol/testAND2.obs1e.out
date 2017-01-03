@@ -1,0 +1,18 @@
+clingo version 5.1.0
+Reading from ASP/config.gringo ...
+Solving...
+Answer: 1
+repair(rEdge("a","t")) repair(rEdge("a","d")) repair(rEdge("t","d"))
+Optimization: 3
+Answer: 2
+repair(rEdge("a","d")) repair(rEdge("t","d"))
+Optimization: 2
+Answer: 1
+repair(rEdge("a","d")) repair(rEdge("t","d"))
+Optimization: 2
+OPTIMUM FOUND
+
+Models       : 3
+  Optimum    : yes
+Optimization : 2
+Calls        : 1

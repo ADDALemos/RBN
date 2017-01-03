@@ -1,0 +1,33 @@
+% Configure repairs operations.
+% Multiple repairs operations are obtained by combining the values in alphabetical order
+% Possible values include:
+%   'e' : remove edges
+%   'g' : flip gate
+%   'i' : negate regulator
+
+repair_e :- repair == e.
+repair_e :- repair == eg.
+repair_e :- repair == ei.
+repair_e :- repair == egi.
+repair_e :- repair == "e".
+repair_e :- repair == "eg".
+repair_e :- repair == "ei".
+repair_e :- repair == "egi".
+
+repair_g :- repair == g.
+repair_g :- repair == eg.
+repair_g :- repair == gi.
+repair_g :- repair == egi.
+repair_g :- repair == "g".
+repair_g :- repair == "eg".
+repair_g :- repair == "gi".
+repair_g :- repair == "egi".
+
+repair_i :- repair == i.
+repair_i :- repair == ei.
+repair_i :- repair == gi.
+repair_i :- repair == egi.
+repair_i :- repair == "i".
+repair_i :- repair == "ei".
+repair_i :- repair == "gi".
+repair_i :- repair == "egi".
