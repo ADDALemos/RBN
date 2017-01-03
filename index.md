@@ -18,8 +18,10 @@ If the model is asynchronous, synchronous or is in steady state.
 * Repair e - removes regulator
 * Repair i - negates a regulator
 * Repair g - changes AND function to OR function
+
 Note: All the combinations of repairs are allowed, and they need to be written in alphabetical order.
-Some examples with small networks are available in the folder: `examples/repairs`.
+
+Some examples with small networks are available in the folder: `examples/repairs`, showing the effects of the repair operations.
 
 ### Model
 
