@@ -3,12 +3,14 @@
 Bla
 
 ***
+
 # How to run the project
 
 `./Converter type [asynchronous|synchronous|steady_state] repair[e|i|g|combinations] examples/Model.net [examples/Obs1.obs examples/Obsn.obs]`
 This will generate the repair models in the examples folder.
 
 ## Arguments of the program
+
 ### Type:
 
 If the model is asynchronous, synchronous or is in steady state.
@@ -33,6 +35,7 @@ The program can deal with 0 or more observations. The observations correspond to
 
 
 ***
+
 # Dependencies
 An ASP solver (contained in the source folder) and available at:
 
@@ -43,11 +46,16 @@ Uses the Quince McCluskey algorithm available at:
 [Quine-McCluskey](https://github.com/pfpacket/Quine-McCluskey) (to compile requires the Boost C++ Libraries) [boost.org](http://www.boost.org/)
 
 ***
+
 ## Data Sets
+
 ### Steady State
+
 In the folder `examples/steady/ecoli` two data sets originally obtained from  are available.
 As the model did not have functions associated with them, all nodes are explained by the same function, where a biological component is present if it has at least one activator and has no inhibitors.
+
 ### Time-series
+
 The data sets in the folder `examples/time` were randomly generated using the program available on the folder scripts. The model was generated using the script available at [BoolNetR2GINsim](https://github.com/ptgm/BoolNetR2GINsim).
 ***
 # Authors
