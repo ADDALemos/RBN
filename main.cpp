@@ -9,6 +9,7 @@
 #include "function/functionLine.h"
 #include "results.h"
 #include "function/functionMain.h"
+#include <algorithm>    // std::min
 
 std::string outfile;
 std::map<std::string,functionLine> fun;
@@ -16,6 +17,9 @@ std::map<std::string, functionMain> fMain;
 
 results *data;
 std::vector<std::string> datasets;
+int lines=0;
+int col =0;
+bool asy,stdy;//true for asynchronous; false for synchronous
 
 
 void readInput(std::string file);
@@ -38,7 +42,7 @@ void writeResults();
 
 //Repair Struct OBS
 int main(int argc, char *argv[]) {
-    if(argc==2){
+    if(argc==3){
         std::string temp="h";
         if(!temp.compare(argv[1])){
             help();
@@ -46,37 +50,49 @@ int main(int argc, char *argv[]) {
 
     }
 
-    if (argc<=2 ){
+    if (argc<=3 ){
         help();
     }
-    if(argc>2) {
-        readInput(argv[2]);
-        sortFunction(argv[2]);
-        outfile=argv[2];
+    if(argc>3) {
+        std::string temp="asynchronous";
+        std::string temp1="steady";
+        if(temp.compare(argv[1])==0){
+            asy=true;
+            stdy= false;
+        } else if(temp1.compare(argv[1])==0){
+            asy=false;
+            stdy=true;
+        } else {
+            asy=false;
+            stdy=false;
+        }
+        readInput(argv[3]);
+        sortFunction(argv[3]);
+        outfile=argv[3];
 
     }
     std::string obs=" ";
-    for(int i=3;i<argc;i++) {
+    for(int i=4;i<argc;i++) {
         readInputObs(argv[i]);
         obs+=argv[i];
-        outfile=argv[3]+std::to_string(argc-3);
+        outfile=argv[4]+std::to_string(argc-4);
         obs+=".lp ";
     }
     if(argc<4){
-        std::string file=argv[2];
+        std::string file=argv[3];
         file=file+".obs.lp";
         obs=file;
         std::ofstream ofstream(file);
         ofstream<<"exp(p).";
         ofstream.close();
     }
-    outfile+=argv[1];
+    outfile+=argv[2];
     outfile+=".out";
-    if(argc>=2){
-        if(isRepair(argv[1])){
-            std::string model=argv[2];
+    if(argc>=3){
+        if(isRepair(argv[2])){
+            std::string model=argv[3];
             model+= ".lp";
-            generateEncoding(argv[1], model,obs);
+            generateEncoding(argv[2], model,obs);
 
         } else {
             help();
@@ -297,6 +313,11 @@ void readOutfile() {
 
 void sortFunction(std::string file) {
     int temp=0;
+    if(asy) {
+        std::ofstream outfile;
+        outfile.open(file + ".lp", std::ios_base::app);
+        outfile << "#program base.\n#const imax   ="<<lines*col<<".\n";
+    }
     std::map<std::string, functionMain>::iterator it;
     for(it=fMain.begin(); it !=fMain.end();it++){
         it->second.setFile(file);
@@ -315,7 +336,7 @@ bool isRepair(std::string repair) {
 }
 
 void help() {
-    std::cout << "For help press h\n Run the program like ./program Active_Repair Moldel.net [optional] Obs1 .. Obs2\n"
+    std::cout << "For help press h\n Run the program like ./program [A]Synchronous/Steady Active_Repair Moldel.net [optional] Obs1 .. Obs2\n"
                     "The Active_Repair can be e - for removing edges; g - for changing a function AND/OR;"
                     " i - for negating a regulator; All possible combination. (in Alphabetical order)\n "
                     "The model has to be encoded in the Boolsim format\n";
@@ -326,22 +347,16 @@ void readInputObs(std::string file) {
     std::ifstream myfile(file);
     std::ofstream ofstream(file+".lp");
     std::string line;
-    std::istringstream iss(file);
-    std::string token;
-    while (std::getline(iss, token, '.')) {
-        if (!token.empty()){
-            ofstream << "exp(" << getString(token) << ")." << std::endl;
-            break;
+    std::string token=file;
 
-        }
-    }
+    ofstream << "exp(" << getString(file) << ")." << std::endl;
 
     if (myfile.is_open()) {
+
         getline(myfile, line);// first line
         size_t pos = 0;
         while ((pos = line.find("\t")) != std::string::npos) {
             std::string temp = line.substr(0, pos);
-
             if (temp.size() == 0) {
                 line.erase(0, pos);
             } else {
@@ -357,9 +372,11 @@ void readInputObs(std::string file) {
 
         datasets.push_back(line);
         //ofstream << "exp(" << line <<")." <<std::endl;
-
+        col=std::min(col,(int)datasets.size());
+        int localline=0;
         while (getline(myfile, line)) {
             int i=0;
+            localline++;
 
             pos = line.find("\t");
             std::string temp = line.substr(0, pos);
@@ -397,6 +414,7 @@ void readInputObs(std::string file) {
             }
 
         }
+        lines=std::min(lines,localline);
 
     }
     ofstream.close();
@@ -537,10 +555,21 @@ void readInput(std::string file) {
     }
 }
 void generateEncoding(std::string r,std::string model,std::string obs) {
+    std::string comand = "./clingo --opt-mode=optN -c repair=" + r;
+    if(asy){
+        comand += " ASP/configA.gringo ASP/asy.lp ";
 
-    std::string comand="./clingo -n 0 -c repair="+r+" ASP/config.gringo ASP/core.gringo ";
-    comand=comand+model+" "+obs;
-    comand+= ">"+ outfile;
+    } else {
+        comand +=  " ASP/config.gringo ASP/core.lp ";
+
+    }
+    if(stdy)
+        comand += " ASP/steady.lp ";
+
+    comand = comand + model + " " + obs;
+    comand += ">" + outfile;
+
+
     std::system(comand.c_str());
 
 

@@ -39,12 +39,16 @@ private:
     vertex dest;
     bool temp;
 
-    void ASPUnary(std::string file, int temp);
+    int ASPUnary(std::string file, int temp);
 
-    void ASPBinary(std::string file, int temp);
+    int ASPBinary(std::string file, int temp);
+    int ASPUnaryReg(std::string file, int temp, int val);
+    int ASPBinaryReg(std::string file, int temp, int val);
+
 
 public:
     int getSizeNeg() const;
+    int ASPReg(std::string file, int temp, int val);
 
     bool getTemp() const;
 
@@ -52,7 +56,7 @@ public:
 
     int getSizePos() const;
 
-    void ASP(std::string file, int temp);
+    int ASP(std::string file, int temp);
 
     void NET(std::string file, bool isand);
 

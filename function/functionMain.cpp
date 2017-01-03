@@ -30,7 +30,7 @@ void functionMain::setTempN(int tempN) {
 }
 
 void functionMain::minimize() {
-    int orVal=tempN;
+    std::vector<int> orVal;
     std::vector<std::string> term;
     std::vector<functionLine> l;
     std::map<std::string, std::string> map;
@@ -75,26 +75,30 @@ void functionMain::minimize() {
         functionLine fL = functionLine(originPos, originNeg, dest);
         if(r.size()>1)
             fL.setTemp(true);
-        fL.ASP(file,tempN);
+        orVal.push_back(tempN);
 
-        tempN++;
+        tempN=fL.ASP(file,tempN);
         l.push_back(fL);
     }
 
     setF(l);
     std::ofstream outfile;
-
     outfile.open(file+".lp", std::ios_base::app);
+
     if(f.size()>1) {
+        tempN++;
         outfile << "functionOr(" << tempN << "," << dest.getName() << ").\n";
         for (int i = 0; i < l.size(); i++) {
             //if(l[i].getSizePos()+l[i].getSizeNeg()>1 || l[i].getSizeNeg()==1) {
-                outfile << "regulator(" << tempN << ",temporary(t" << orVal << ")).\n";
-                outfile << "edge(temporary(t" << orVal << ")," << dest.getName() << ").\n";
+
+           // if(l[i].getSizePos()>1)
+                l[i].ASPReg(file,tempN,orVal[i]);
+            //else{
+
+            //}
             //} else if(l[i].getSizePos()==1){
               //  outfile << "regulator(" << tempN << "," << l[i].getUnaryVertex().getName() << ").\n";
             //}
-            orVal++;
         }
     }
 }

@@ -1,0 +1,16 @@
+functionAnd(0,"c").
+regulator(0,"b").
+edge("b","c").
+regulator(0,temporary(tNot1)).
+functionNot(not1,temporary(tNot1)).
+regulator(not1,"a").
+edge("a",temporary(tNot1)).
+edge(temporary(tNot1),"c").
+functionAnd(0,"c").
+regulator(0,"b").
+edge("b","c").
+regulator(0,temporary(tNot1)).
+functionNot(not1,temporary(tNot1)).
+regulator(not1,"a").
+edge("a",temporary(tNot1)).
+edge(temporary(tNot1),"c").

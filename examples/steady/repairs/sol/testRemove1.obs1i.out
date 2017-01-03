@@ -1,0 +1,19 @@
+clingo version 5.1.0
+Reading from ASP/config.gringo ...
+Solving...
+Answer: 1
+repair(regulator("d","b")) repair(regulator("d","a"))
+Optimization: 2
+Answer: 1
+repair(regulator("d","c")) repair(regulator("d","a"))
+Optimization: 2
+Answer: 2
+repair(regulator("d","b")) repair(regulator("d","a"))
+Optimization: 2
+OPTIMUM FOUND
+
+Models       : 3
+  Optimum    : yes
+  Optimal    : 2
+Optimization : 2
+Calls        : 1
