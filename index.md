@@ -1,6 +1,14 @@
 # Abstract 
 ***
-Bla
+Boolean logical models of biological regulatory and signalling networks are increasingly used to formally describe and understand complex biological processes.
+Such models often need to be repaired whenever new observations become available, rendering the model inconsistent with the new observations.
+Although many studies have focuses on inferring new models (or classes of models) from data, the automation of model repair is still in its infancy, often still being a manual process and therefore prone to errors.
+
+In this work, a tool is provided to suggest possible repair operations to inconsistent models based on changing the model logical functions.
+The tool uses Answer Set Programming to identify possible repair operations to the models following both synchronous or asynchronous updating schemes. 
+
+The tool was validated using both Boolean models of randomly generated networks and data sets of Escherichia coli at steady state.
+The limitations of the implemented tool for each of the updating schemes are discussed. The impact of the minimization algorithm is also addressed.
 
 ***
 
