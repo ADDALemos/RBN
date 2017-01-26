@@ -19,7 +19,7 @@ public:
     void setFile(const std::string file);
     void addF(functionLine f);
     void setF(const std::vector<functionLine> &f);
-    void minimize();
+    void minimize(bool asy);
     void NET(std::string file);
     void changeRegSign(std::string s);
     void remove(std::string s);

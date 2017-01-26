@@ -114,30 +114,40 @@ std::string functionLine::functionWrite(std::map<std::string,std::string> other)
         delete originPos;
     }*/
 
-int functionLine::ASP(std::string file, int  temp){
+int functionLine::ASP(std::string file, int  temp, bool asy){
      if(originPos.size()+originNeg.size()>1){
-         return ASPBinary(file,temp);
+         return ASPBinary(file,temp, asy);
      } else{
-         return ASPUnary(file,temp);
+         return ASPUnary(file,temp, asy);
      }
  }
-int functionLine::ASPReg(std::string file, int  temp,int orVal) {
+int functionLine::ASPReg(std::string file, int  temp,int orVal,bool asy) {
     if(originPos.size()+originNeg.size()>1){
-        return ASPBinaryReg(file,temp,orVal);
+        return ASPBinaryReg(file,temp,orVal, asy);
     } else{
-        return ASPUnaryReg(file,temp,orVal);
+        return ASPUnaryReg(file,temp,orVal, asy);
     }
 }
-int functionLine::ASPUnaryReg(std::string file, int  temp,int orVal) {
+int functionLine::ASPUnaryReg(std::string file, int  temp,int orVal,bool asy) {
     std::ofstream outfile;
     outfile.open(file + ".lp", std::ios_base::app);
     if(originPos.size()>0) {
-        outfile << "regulator(" << temp << "," << originPos[0].getName() << ").\n";
-        outfile << "edge(" << originPos[0].getName() << "," << dest.getName() << ").\n";
+        if(getTemp()) {
+            outfile << "regulator(" << temp << "," << originPos[0].getName() << ").\n";
+            if (asy)
+                outfile << "edge(" << originPos[0].getName() << "," << dest.getName() << ",0).\n";
+            else
+
+                outfile << "edge(" << originPos[0].getName() << "," << dest.getName() << ").\n";
+        }
     }
     if(originNeg.size()>0) {
         outfile << "regulator(" << temp << ",temporary(tNot" << orVal << ")).\n";
-        outfile << "edge(temporary(tNot" << orVal << ")," << dest.getName() << ").\n";
+        if(asy)
+        outfile << "edge(temporary(tNot" << orVal << ")," << dest.getName() << ",0).\n";
+        else
+            outfile << "edge(temporary(tNot" << orVal << ")," << dest.getName() << ").\n";
+
 
     }
     return temp;
@@ -146,30 +156,42 @@ int functionLine::ASPUnaryReg(std::string file, int  temp,int orVal) {
 
 
 }
-int functionLine::ASPBinaryReg(std::string file, int  temp,int orVal) {
+int functionLine::ASPBinaryReg(std::string file, int  temp,int orVal,bool asy) {
     std::ofstream outfile;
     outfile.open(file + ".lp", std::ios_base::app);
     outfile << "regulator(" << temp << ",temporary(t" << orVal << ")).\n";
-    outfile << "edge(temporary(t" << orVal << ")," << dest.getName() << ").\n";
+    if(asy)
+    outfile << "edge(temporary(t" << orVal << ")," << dest.getName() << ",0).\n";
+    else
+        outfile << "edge(temporary(t" << orVal << ")," << dest.getName() << ").\n";
+
     return temp;
 
 
 }
-int functionLine::ASPUnary(std::string file, int  temp) {
+int functionLine::ASPUnary(std::string file, int  temp,bool asy) {
     std::ofstream outfile;
     outfile.open(file + ".lp", std::ios_base::app);
-
     if(originPos.size()>0){
 
-        if(getTemp()) {
-           // outfile << "functionId(" << temp << ",temporary(t" << temp << ")).\n";
+        if(!getTemp()) {
+
+            temp++;
+            //if(getTemp()) {
+            // outfile << "functionId(" << temp << ",temporary(t" << temp << ")).\n";
             //outfile << "regulator(temporary(t" << temp << "," << originPos[0].getName() << ").\n";
             //outfile << "edge(" << originPos[0].getName() << ",temporary(t" << temp << ")).\n";
-        } else{
-           // outfile<<"functionId("<< temp<< ","<< dest.getName()<< ").\n";
-           // outfile << "regulator(" << temp << "," << originPos[0].getName() << ").\n";
-           // outfile << "edge(" << originPos[0].getName() << "," << dest.getName() << ").\n";
+            //} else{
+            if(asy){
 
+                outfile << "functionId(" << temp << "," << dest.getName() << ",0).\n";
+                outfile << "regulator(" << temp << "," << originPos[0].getName() << ").\n";
+                outfile << "edge(" << originPos[0].getName() << "," << dest.getName() << ",0).\n";
+            }else{
+                outfile << "functionId(" << temp << "," << dest.getName() << ").\n";
+                outfile << "regulator(" << temp << "," << originPos[0].getName() << ").\n";
+                outfile << "edge(" << originPos[0].getName() << "," << dest.getName() << ").\n";
+            }
 
         }
 
@@ -178,14 +200,26 @@ int functionLine::ASPUnary(std::string file, int  temp) {
     if(originNeg.size()>0) {
         temp++;
         if(getTemp()) {
-            outfile << "functionNot(tNot" << temp << ",temporary(tNot" << temp << ")).\n";
             outfile << "regulator(tNot" << temp << "," << originNeg[0].getName() << ").\n";
-            outfile << "edge(" << originNeg[0].getName() << ",temporary(tNot" << temp << ")).\n";
-        } else{
-            outfile<<"functionNot(tNot"<< temp<< ","<< dest.getName()<< ").\n";
-            outfile << "regulator(tNot" << temp << "," << originNeg[0].getName() << ").\n";
-            outfile << "edge(" << originNeg[0].getName() << "," << dest.getName() << ").\n";
+            if(asy){
 
+                outfile << "functionNot(tNot" << temp << ",temporary(tNot" << temp << "),0).\n";
+                outfile << "edge(" << originNeg[0].getName() << ",temporary(tNot" << temp << "),0).\n";
+            }else{
+
+                outfile << "functionNot(tNot" << temp << ",temporary(tNot" << temp << ")).\n";
+                outfile << "edge(" << originNeg[0].getName() << ",temporary(tNot" << temp << ")).\n";
+            }
+        } else{
+            outfile << "regulator(tNot" << temp << "," << originNeg[0].getName() << ").\n";
+            if(asy){
+            outfile<<"functionNot(tNot"<< temp<< ","<< dest.getName()<< ",0).\n";
+            outfile << "edge(" << originNeg[0].getName() << "," << dest.getName() << ",0).\n";
+            }else{
+                outfile<<"functionNot(tNot"<< temp<< ","<< dest.getName()<< ").\n";
+                outfile << "edge(" << originNeg[0].getName() << "," << dest.getName() << ").\n";
+
+            }
 
         }
 
@@ -195,15 +229,21 @@ int functionLine::ASPUnary(std::string file, int  temp) {
     }
 
 
-int functionLine::ASPBinary(std::string file, int  temp){
+int functionLine::ASPBinary(std::string file, int  temp,bool asy){
      std::ofstream outfile;
      outfile.open(file+".lp", std::ios_base::app);
     if(getTemp()) {
-        outfile << "functionAnd(" << temp << ",temporary(t" << temp << ")).\n";
+        if(asy)
+        outfile << "functionAnd(" << temp << ",temporary(t" << temp << "),0).\n";
+        else
+            outfile << "functionAnd(" << temp << ",temporary(t" << temp << ")).\n";
 
         for (int i = 0; i < originPos.size(); i++) {
             outfile << "regulator(" << temp << "," << originPos[i].getName() << ").\n";
-            outfile << "edge(" << originPos[i].getName() << ",temporary(t" << temp << ")).\n";
+            if(asy)
+            outfile << "edge(" << originPos[i].getName() << ",temporary(t" << temp << "),0).\n";
+            else
+                outfile << "edge(" << originPos[i].getName() << ",temporary(t" << temp << ")).\n";
 
         }
 
@@ -211,17 +251,29 @@ int functionLine::ASPBinary(std::string file, int  temp){
         for (int i = 0; i < originNeg.size(); i++) {
             temp++;
             outfile << "regulator(" << oldtemp << ",temporary(tNot" << temp << ")).\n";
-            outfile << "functionNot(not" << temp << ",temporary(tNot" << temp << ")).\n";
             outfile << "regulator(not" << temp << "," << originNeg[i].getName() << ").\n";
-            outfile << "edge(" << originNeg[i].getName() << ",temporary(tNot" << temp << ")).\n";
-            outfile << "edge(temporary(tNot" << temp << "),temporary(t" << oldtemp << ")).\n";
+            if(asy) {
+                outfile << "functionNot(not" << temp << ",temporary(tNot" << temp << "),0).\n";
+                outfile << "edge(" << originNeg[i].getName() << ",temporary(tNot" << temp << "),0).\n";
+                outfile << "edge(temporary(tNot" << temp << "),temporary(t" << oldtemp << "),0).\n";
+            } else{
+                outfile << "functionNot(not" << temp << ",temporary(tNot" << temp << ")).\n";
+                outfile << "edge(" << originNeg[i].getName() << ",temporary(tNot" << temp << ")).\n";
+                outfile << "edge(temporary(tNot" << temp << "),temporary(t" << oldtemp << ")).\n";
+            }
         }
     } else{
-        outfile << "functionAnd(" << temp << "," << dest.getName() << ").\n";
+        if(asy)
+            outfile << "functionAnd(" << temp << "," << dest.getName() << ",0).\n";
+        else
+            outfile << "functionAnd(" << temp << "," << dest.getName() << ").\n";
 
         for (int i = 0; i < originPos.size(); i++) {
             outfile << "regulator(" << temp << "," << originPos[i].getName() << ").\n";
-            outfile << "edge(" << originPos[i].getName() << "," << dest.getName() << ").\n";
+            if(asy)
+                outfile << "edge(" << originPos[i].getName() << "," << dest.getName() << ",0).\n";
+            else
+                outfile << "edge(" << originPos[i].getName() << "," << dest.getName() << ",0).\n";
 
         }
 
@@ -229,10 +281,21 @@ int functionLine::ASPBinary(std::string file, int  temp){
         for (int i = 0; i < originNeg.size(); i++) {
             temp++;
             outfile << "regulator(" << oldtemp << ",temporary(tNot" << temp << ")).\n";
-            outfile << "functionNot(not" << temp << ",temporary(tNot" << temp << ")).\n";
+            if(asy){
+                outfile << "functionNot(not" << temp << ",temporary(tNot" << temp << "),0).\n";
+                outfile << "edge(" << originNeg[i].getName() << ",temporary(tNot" << temp << "),0).\n";
+                outfile << "edge(temporary(tNot" << temp << ")," << dest.getName() << ",0).\n";
+
+            }
+            else{
+                outfile << "edge(" << originNeg[i].getName() << ",temporary(tNot" << temp << ")).\n";
+                outfile << "edge(temporary(tNot" << temp << ")," << dest.getName() << ").\n";
+                outfile << "functionNot(not" << temp << ",temporary(tNot" << temp << ")).\n";
+
+            }
+
             outfile << "regulator(not" << temp << "," << originNeg[i].getName() << ").\n";
-            outfile << "edge(" << originNeg[i].getName() << ",temporary(tNot" << temp << ")).\n";
-            outfile << "edge(temporary(tNot" << temp << ")," << dest.getName() << ").\n";
+
         }
     }
     return temp;

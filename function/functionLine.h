@@ -26,6 +26,7 @@ public:
 
     void remove(std::string s);
 
+
     void repairOR();
 
 
@@ -39,16 +40,16 @@ private:
     vertex dest;
     bool temp;
 
-    int ASPUnary(std::string file, int temp);
+    int ASPUnary(std::string file, int temp,bool asy);
 
-    int ASPBinary(std::string file, int temp);
-    int ASPUnaryReg(std::string file, int temp, int val);
-    int ASPBinaryReg(std::string file, int temp, int val);
+    int ASPBinary(std::string file, int temp,bool asy);
+    int ASPUnaryReg(std::string file, int temp, int val,bool asy);
+    int ASPBinaryReg(std::string file, int temp, int val,bool asy);
 
 
 public:
     int getSizeNeg() const;
-    int ASPReg(std::string file, int temp, int val);
+    int ASPReg(std::string file, int temp, int val,bool asy);
 
     bool getTemp() const;
 
@@ -56,7 +57,7 @@ public:
 
     int getSizePos() const;
 
-    int ASP(std::string file, int temp);
+    int ASP(std::string file, int temp, bool asy);
 
     void NET(std::string file, bool isand);
 

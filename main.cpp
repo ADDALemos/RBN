@@ -18,7 +18,6 @@ std::map<std::string, functionMain> fMain;
 results *data;
 std::vector<std::string> datasets;
 int lines=0;
-int col =0;
 bool asy,stdy;//true for asynchronous; false for synchronous
 
 
@@ -67,7 +66,6 @@ int main(int argc, char *argv[]) {
             stdy=false;
         }
         readInput(argv[3]);
-        sortFunction(argv[3]);
         outfile=argv[3];
 
     }
@@ -92,6 +90,7 @@ int main(int argc, char *argv[]) {
         if(isRepair(argv[2])){
             std::string model=argv[3];
             model+= ".lp";
+            sortFunction(argv[3]);
             generateEncoding(argv[2], model,obs);
 
         } else {
@@ -315,14 +314,15 @@ void sortFunction(std::string file) {
     int temp=0;
     if(asy) {
         std::ofstream outfile;
+        std::cout<<"hey\n";
         outfile.open(file + ".lp", std::ios_base::app);
-        outfile << "#program base.\n#const imax   ="<<lines*col<<".\n";
-    }
+        outfile << "#program check(t).\n"
+                ":-query(t),t!="<<(lines)<<".\n";    }
     std::map<std::string, functionMain>::iterator it;
     for(it=fMain.begin(); it !=fMain.end();it++){
         it->second.setFile(file);
         it->second.setTempN(temp);
-        it->second.minimize();
+        it->second.minimize(asy);
         temp=it->second.getTempN();
     }
 }
@@ -344,6 +344,7 @@ void help() {
 }
 
 void readInputObs(std::string file) {
+    std::cout<<"hey\n";
     std::ifstream myfile(file);
     std::ofstream ofstream(file+".lp");
     std::string line;
@@ -372,11 +373,9 @@ void readInputObs(std::string file) {
 
         datasets.push_back(line);
         //ofstream << "exp(" << line <<")." <<std::endl;
-        col=std::min(col,(int)datasets.size());
         int localline=0;
         while (getline(myfile, line)) {
             int i=0;
-            localline++;
 
             pos = line.find("\t");
             std::string temp = line.substr(0, pos);
@@ -393,6 +392,8 @@ void readInputObs(std::string file) {
                 if( temp.size() !=0) {
                     ofstream << "obs_vlabel(" << getString(token) << "," << name << "," << temp <<","<<i<< ")." << std::endl;
                     i++;
+                    localline++;
+
 
                 }
                 line.erase(0, pos + 1);
@@ -409,18 +410,30 @@ void readInputObs(std::string file) {
                         line.erase(line.size() - 1, line.size());
                     }
                 }
-                if(line[0]!='\n'&&line[0]!='\r')
+                if(line[0]!='\n'&&line[0]!='\r'){
+                    localline++;
                     ofstream << "obs_vlabel(" << getString(token) << "," << name << "," << line <<","<<i<< ")." << std::endl;
+
+
+                }
             }
 
         }
-        lines=std::min(lines,localline);
+        lines=localline;
+
 
     }
     ofstream.close();
 }
 
 std::string &getString(std::string &temp) {
+    while(temp[0] == ' ') {
+        temp.erase(0,1);
+    }
+    while(temp[temp.size()-1] == ' ') {
+        temp.erase(temp.size()-1,temp.size());
+    }
+
     if(temp[temp.size()-1] == '\n') {
         temp.erase(temp.size()-1,temp.size());
     }
@@ -565,7 +578,7 @@ void generateEncoding(std::string r,std::string model,std::string obs) {
     }
     if(stdy)
         comand += " ASP/steady.lp ";
-
+    std::cout<<model<<" "<<obs<<"\n";
     comand = comand + model + " " + obs;
     comand += ">" + outfile;
 

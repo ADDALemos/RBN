@@ -65,9 +65,12 @@ As the model did not have functions associated with them, all nodes are explaine
 ### Time-series
 
 The data sets in the folder `examples/time` were randomly generated using the program available on the folder scripts. The model was generated using the script available at [BoolNetR2GINsim](https://github.com/ptgm/BoolNetR2GINsim).
+
 ***
+
 # Authors
 Alexandre Lemos, [Pedro T. Monteiro](http://pedromonteiro.org/) and [Inês Lynce](http://sat.inesc-id.pt/~ines/).
+
 # Contacts:
 If you have any comments or questions, please [contact us](mailto:ines.lynce@tecnico.ulisboa.pt;alexandre.lemos@tecnico.ulisboa.pt;pedro.tiago.monteiro@tecnico.pt;?subject=[Repairing%20Boolean%20regulatory%20networks]).
 

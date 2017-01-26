@@ -29,7 +29,7 @@ void functionMain::setTempN(int tempN) {
     functionMain::tempN = tempN;
 }
 
-void functionMain::minimize() {
+void functionMain::minimize(bool asy) {
     std::vector<int> orVal;
     std::vector<std::string> term;
     std::vector<functionLine> l;
@@ -77,7 +77,7 @@ void functionMain::minimize() {
             fL.setTemp(true);
         orVal.push_back(tempN);
 
-        tempN=fL.ASP(file,tempN);
+        tempN=fL.ASP(file,tempN,asy);
         l.push_back(fL);
     }
 
@@ -87,12 +87,16 @@ void functionMain::minimize() {
 
     if(f.size()>1) {
         tempN++;
-        outfile << "functionOr(" << tempN << "," << dest.getName() << ").\n";
+        if (asy)
+            outfile << "functionOr(" << tempN << "," << dest.getName() << ",0).\n";
+        else
+            outfile << "functionOr(" << tempN << "," << dest.getName() << ").\n";
+    }
         for (int i = 0; i < l.size(); i++) {
             //if(l[i].getSizePos()+l[i].getSizeNeg()>1 || l[i].getSizeNeg()==1) {
 
            // if(l[i].getSizePos()>1)
-                l[i].ASPReg(file,tempN,orVal[i]);
+                l[i].ASPReg(file,tempN,orVal[i],asy);
             //else{
 
             //}
@@ -100,7 +104,7 @@ void functionMain::minimize() {
               //  outfile << "regulator(" << tempN << "," << l[i].getUnaryVertex().getName() << ").\n";
             //}
         }
-    }
+
 }
 
 int functionMain::getTempN() const {
