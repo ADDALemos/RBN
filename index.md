@@ -59,12 +59,14 @@ Uses the Quince McCluskey algorithm available at:
 
 ### Steady State
 
-In the folder `examples/steady/ecoli` two data sets originally obtained from  are available.
+In the folder `examples/steady/ecoli` two data sets originally obtained from [Gebser et al](http://www.cs.uni-potsdam.de/bioasp/KR10/) are available.
 As the model did not have functions associated with them, all nodes are explained by the same function, where a biological component is present if it has at least one activator and has no inhibitors.
 
 ### Time-series
 
-The data sets in the folder `examples/time` were randomly generated using the program available on the folder scripts. The model was generated using the script available at [BoolNetR2GINsim](https://github.com/ptgm/BoolNetR2GINsim).
+The data sets in the folder `examples/time/modeloriginal` and `examples/time/modelCorrupted` were originally obtained from [Merhej et al](https://github.com/eliemerhejUGENT/repairInconsistentASP).
+
+The data sets in the folder `examples/time/#networksize` were randomly generated using the program available on the folder scripts. The model was generated using the script available at [BoolNetR2GINsim](https://github.com/ptgm/BoolNetR2GINsim).
 
 ***
 
