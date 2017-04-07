@@ -138,17 +138,19 @@ repair_functionNot(N,V,t):-functionNot(N,V,_), repaired(N,W,_),regulator(N,W).
 :-visit(P,V,TS,t), not visit(P,V,TS-1,_),timeStep(TS),timeStep(TS-1).
 :-not consistentFunction(P,O,t),visit(P,O,_,t), not input(P,O),t!=1.
 :-not consistentFunction(P,O,t),vertex(O,T),isTemp(O,_),t!=1,exp(P), not input(P,O),timeStep(t),isVisited(N,O,_),function(N,_,_).
-infl(V,t):-visit(P,V,0,t),edge(A,V,_),not isV(P,A,t-1).
+%infl(V,t):-visit(P,V,0,t),edge(A,V,_),not isV(P,A,t-1).
 :-visit(P,V,TS,t),edge(A,V,_),not isV(P,A,t-1),TS!=0.
 max(3).
 isV(P,O,t):-visit(P,O,_,_),not isTemp(O,_).
 isV(P,O,t):-visit(P,W,_,_),isTemp(O,_),isFunction(O,W).
 end(V,t,T):-not visit(P,V,T,_),vertex(V,_),exp(P),timeStep(T),not isTemp(V,_).
-svlabel(P,V,S,T,t):-not end(_,t,_),visit(P,V,T,_),vlabel(P,V,S,T,_), not isTemp(V,_).
-status(T,TI,t):-visit(P,W,TI,t),T=#max{TS:visit(P,V,TS,_),V!=W}.
-:-visit(P,W,TI,t),T=#max{TS:visit(P,V,TS,_),V!=W},T>TI,T-TI>M,max(M),timeStep(T),timeStep(TI).
-:-visit(P,W,TI,t),T=#max{TS:visit(P,V,TS,_),V!=W},TI>T,TI-T>M,max(M),timeStep(T),timeStep(TI).
+%Debug
+%svlabel(P,V,S,T,t):-not end(_,t,_),visit(P,V,T,_),vlabel(P,V,S,T,_), not isTemp(V,_).
+%status(T,TI,t):-visit(P,W,TI,t),T=#max{TS:visit(P,V,TS,_),V!=W}.
+%:-visit(P,W,TI,t),T=#max{TS:visit(P,V,TS,_),V!=W},T>TI,T-TI>M,max(M),timeStep(T),timeStep(TI).
+%:-visit(P,W,TI,t),T=#max{TS:visit(P,V,TS,_),V!=W},TI>T,TI-T>M,max(M),timeStep(T),timeStep(TI).
 #show repair/2.
 #show visit/4.
 #minimize { 1@1, R,T:repair(R,T) }.
-#minimize { 1@2, R,T:infl(R,T) }.
+%Dectetion cycle
+%#minimize { 1@2, R,T:infl(R,T) }.
