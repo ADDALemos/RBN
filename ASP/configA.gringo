@@ -8,10 +8,10 @@
 %   'n' : nand and nor
 %	'i' : negate input of functions
 
-t_a :- time == asynchronous.
-t_s :- time == synchronous.
-t_a :- time == "asynchronous".
-t_s :- time == "synchronous".
+%t_a :- time == asynchronous.
+%t_s :- time == synchronous.
+%t_a :- time == "asynchronous".
+%t_s :- time == "synchronous".
 
 repair_e :- repair == e.
 repair_e :- repair == eg.

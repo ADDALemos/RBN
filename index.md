@@ -14,7 +14,8 @@ The limitations of the implemented tool for each of the updating schemes are dis
 
 # How to run the project
 
-`./Converter type [asynchronous|synchronous|steady_state] repair[e|i|g|combinations] examples/Model.net [examples/Obs1.obs examples/Obsn.obs]`
+`./Converter type [asynchronous|synchronous|steady_state] repair[e|i|g|combinations] examples/Model.net [examples/Obs1.obs examples/Obsn.obs] [-n repairableNodes]`
+
 This will generate the repair models in the examples folder.
 
 ## Arguments of the program
@@ -35,12 +36,15 @@ Some examples with small networks are available in the folder: `examples/steady/
 
 ### Model
 
-The model has to be encoded in boolSim ([format](http://www.colomoto.org/formats/boolsim.html)). 
+The model has to be encoded in Boolsim ([format](http://www.colomoto.org/formats/boolsim.html)). 
 
 ### Experimental values
 
 The program can deal with 0 or more observations. The observations correspond to a time-series and the time-series is organized in a matrix. As this argument is optional when not present the program will infer the data to minimize the number of repair operations needed.
 
+### Repairable Nodes
+
+A list of nodes  where it is suspected that model is incorrect.  The tool will only apply repair operations to this nodes. The file received by the tool has a node per line. 
 
 ***
 

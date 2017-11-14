@@ -1,25 +1,30 @@
-
+#include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <cstring>
 #include <map>
+#include <chrono>
+#include <set>
+#include <random>
 #include <sstream>
 #include "function/vertex.h"
 #include "function/functionLine.h"
 #include "results.h"
 #include "function/functionMain.h"
 #include <algorithm>    // std::min
-
+std::string outnode;
 std::string outfile;
 std::map<std::string,functionLine> fun;
 std::map<std::string, functionMain> fMain;
-
+void randomA();
 results *data;
 std::vector<std::string> datasets;
 int lines=0;
-bool asy,stdy;//true for asynchronous; false for synchronous
+bool asy,stdy,flag;//true for asynchronous; false for synchronous
 
+
+void readNodes(std::string file);
 
 void readInput(std::string file);
 
@@ -41,6 +46,7 @@ void writeResults();
 
 //Repair Struct OBS
 int main(int argc, char *argv[]) {
+
     if(argc==3){
         std::string temp="h";
         if(!temp.compare(argv[1])){
@@ -69,14 +75,29 @@ int main(int argc, char *argv[]) {
         outfile=argv[3];
 
     }
+    flag=false;
+
     std::string obs=" ";
+    std::string flagn="-n";
     for(int i=4;i<argc;i++) {
-        readInputObs(argv[i]);
-        obs+=argv[i];
-        outfile=argv[4]+std::to_string(argc-4);
-        obs+=".lp ";
+        if(flagn.compare(argv[i])){
+            readInputObs(argv[i]);
+            obs+=argv[i];
+            outfile=argv[4]+std::to_string(argc-4);
+            obs+=".lp ";
+        } else{
+            std::vector<std::string> d;
+            flag=true;
+            i++;
+            std::string t=argv[i];
+            boost::split(d,t,boost::is_any_of("/"));
+            outfile+=d[d.size()-1];
+            outnode=d[d.size()-1];
+
+            readNodes(argv[i]);
+        }
     }
-    if(argc<4){
+    if(argc<4 || (argc==4 && flag)){
         std::string file=argv[3];
         file=file+".obs.lp";
         obs=file;
@@ -90,7 +111,12 @@ int main(int argc, char *argv[]) {
         if(isRepair(argv[2])){
             std::string model=argv[3];
             model+= ".lp";
+
+            //randomA();
+            //return 0;
+
             sortFunction(argv[3]);
+
             generateEncoding(argv[2], model,obs);
 
         } else {
@@ -105,7 +131,7 @@ int main(int argc, char *argv[]) {
 void writeResults() {
     data->print(outfile);
     std::string comand ="rm "+ outfile;
-   // std::system(comand.c_str());
+    // std::system(comand.c_str());
 
 
 }
@@ -134,7 +160,7 @@ void readOutfile() {
                     //andF.push_back(line.substr(0, pos));
                     std::map<std::string, functionMain>::iterator it;
                     if ((it = fMain.find(line.substr(0, pos))) == fMain.end()) {
-                        std::cout << "opsA\n";
+                        //      std::cout << "opsA\n";
                     } else {
                         it->second.repairAND();
                     }
@@ -148,7 +174,7 @@ void readOutfile() {
                     //orF.push_back(line.substr(0, pos));
                     std::map<std::string, functionMain>::iterator it;
                     if ((it = fMain.find(line.substr(0, pos))) == fMain.end()) {
-                        std::cout << "opsO\n";
+                        //    std::cout << "opsO\n";
                     } else {
                         it->second.repairOR();
                     }
@@ -164,7 +190,7 @@ void readOutfile() {
                     //edge.push_back(std::pair<std::string, std::string>(ori, line.substr(0, pos)));
                     std::map<std::string, functionMain>::iterator it;
                     if ((it = fMain.find(line.substr(0, pos))) == fMain.end()) {
-                        std::cout << "opsRE\n";
+                        //  std::cout << "opsRE\n";
                     } else {
                         it->second.remove(ori);
                     }
@@ -180,7 +206,7 @@ void readOutfile() {
                     //reg.insert(std::pair<std::string,std::string>(s,line.substr(0, pos)));
                     std::map<std::string, functionMain>::iterator it;
                     if ((it = fMain.find(s)) == fMain.end()) {
-                        std::cout <<s<< " opsR\n";
+                        // std::cout <<s<< " opsR\n";
                     } else {
                         it->second.changeRegSign(line.substr(0, pos));
                     }
@@ -199,7 +225,7 @@ void readOutfile() {
                             pos = line.find(")");
                             std::map<std::string, functionMain>::iterator it;
                             if ((it = fMain.find(line.substr(0, pos))) == fMain.end()) {
-                                std::cout << "opsA1\n";
+                                // std::cout << "opsA1\n";
                             } else {
                                 it->second.repairAND();
                             }
@@ -213,7 +239,7 @@ void readOutfile() {
                             //orF.push_back(line.substr(0, pos));
                             std::map<std::string, functionMain>::iterator it;
                             if ((it = fMain.find(line.substr(0, pos))) == fMain.end()) {
-                                std::cout << "opsO1\n";
+                                //      std::cout << "opsO1\n";
                             } else {
                                 it->second.repairOR();
                             }
@@ -229,7 +255,7 @@ void readOutfile() {
 //                         edge.push_back(std::pair<std::string, std::string>(ori, line.substr(0, pos)));
                             std::map<std::string, functionMain>::iterator it;
                             if ((it = fMain.find(line.substr(0, pos))) == fMain.end()) {
-                                std::cout << line.substr(0, pos) << "opsRe1\n";
+                                //      std::cout << line.substr(0, pos) << "opsRe1\n";
                             } else {
                                 it->second.remove(ori);
                             }
@@ -246,7 +272,7 @@ void readOutfile() {
                             // reg.insert(std::pair<std::string,std::string>(s,line.substr(0, pos)));
                             std::map<std::string, functionMain>::iterator it;
                             if ((it = fMain.find(s)) == fMain.end()) {
-                                std::cout << s << "opsR1\n";
+                                //  std::cout << s << "opsR1\n";
                             } else {
                                 it->second.changeRegSign(line.substr(0, pos));
                             }
@@ -314,7 +340,6 @@ void sortFunction(std::string file) {
     int temp=0;
     if(asy) {
         std::ofstream outfile;
-        std::cout<<"hey\n";
         outfile.open(file + ".lp", std::ios_base::app);
         outfile << "#program check(t).\n"
                 ":-query(t),t!="<<(lines)<<".\n";    }
@@ -329,22 +354,22 @@ void sortFunction(std::string file) {
 
 bool isRepair(std::string repair) {
     if (!repair.compare("e")||!repair.compare("i")||!repair.compare("g")||!repair.compare("eg")||!repair.compare("ei")||
-            !repair.compare("gi")||!repair.compare("egi")){
+        !repair.compare("gi")||!repair.compare("egi")){
         return true;
     }
     return false;
 }
 
 void help() {
-    std::cout << "For help press h\n Run the program like ./program [A]Synchronous/Steady Active_Repair Moldel.net [optional] Obs1 .. Obs2\n"
-                    "The Active_Repair can be e - for removing edges; g - for changing a function AND/OR;"
-                    " i - for negating a regulator; All possible combination. (in Alphabetical order)\n "
-                    "The model has to be encoded in the Boolsim format\n";
+    std::cout << "For help press h\n Run the program like ./program [A]Synchronous/Steady Active_Repair Moldel.net [optional] Obs1 .. Obs2 [optional] -n List of Nodes\n"
+            "The Active_Repair can be e - for removing edges; g - for changing a function AND/OR;"
+            " i - for negating a regulator; All possible combination. (in Alphabetical order)\n "
+            "The model has to be encoded in the Boolsim format\n"
+            "The list of nodes where repair operations can be applied. A file with the nodes separated by a space\n";
     std::exit(0);
 }
 
 void readInputObs(std::string file) {
-    std::cout<<"hey\n";
     std::ifstream myfile(file);
     std::ofstream ofstream(file+".lp");
     std::string line;
@@ -363,12 +388,12 @@ void readInputObs(std::string file) {
             } else {
                 temp = getString(temp);
                 datasets.push_back(temp);
-               // ofstream << "exp(" << temp << ")." << std::endl;
+                // ofstream << "exp(" << temp << ")." << std::endl;
 
             }
             line.erase(0, pos + 1);
         }
-      //  std::transform(line.begin(), line.end(), line.begin(), ::tolower);
+        //  std::transform(line.begin(), line.end(), line.begin(), ::tolower);
         line = getString(line);
 
         datasets.push_back(line);
@@ -441,17 +466,17 @@ std::string &getString(std::string &temp) {
         temp.erase(temp.size()-1,temp.size());
     }
     if(temp[0] != '\"'){
-                    std::string ch="\"";
-                    ch.append(temp);
-                    temp=ch;
-                }
+        std::string ch="\"";
+        ch.append(temp);
+        temp=ch;
+    }
     if(temp[temp.size()-1] != '\"'){
-                    temp.append("\"");
-                }
+        temp.append("\"");
+    }
 
-        return temp;
+    return temp;
 }
-
+std::set<std::string> nodesS;
 
 void readInput(std::string file) {
     std::ifstream myfile(file);
@@ -481,11 +506,13 @@ void readInput(std::string file) {
                     if (token.find("^") != std::string::npos) {
                         temp = token.erase(0, 1);
                         temp = getString(temp);
-
                         v = vertex(temp);
+                        nodesS.insert(temp);
+
                         neg.push_back(v);
                     } else {
                         temp = getString(token);
+                        nodesS.insert(temp);
 
 
                         v = vertex(temp);
@@ -501,11 +528,17 @@ void readInput(std::string file) {
                     temp = rightside.erase(0, 1);
                     temp = getString(temp);
                     v = vertex(temp);
+
+                    nodesS.insert(temp);
+
                     neg.push_back(v);
-                  } else {
+                } else {
                     temp = rightside;
                     temp = getString(temp);
                     v = vertex(temp);
+
+                    nodesS.insert(temp);
+
                     posi.push_back(v);
 
                 }
@@ -513,7 +546,7 @@ void readInput(std::string file) {
                 line.erase(0, pos + 2);
                 if (!nand) {
                     std::string getstring = getString(line);
-
+                    nodesS.insert(getstring);
                     functionLine f = functionLine(posi, neg, getstring);
                     fun.insert(std::pair<std::string,functionLine>(getstring,f));
                     std::map<std::string,functionMain>::iterator it;
@@ -529,6 +562,7 @@ void readInput(std::string file) {
                     for (int i = 0; i < posi.size(); i++) {
                         std::vector<vertex> temp;
                         std::string getstring = getString(line);
+                        nodesS.insert(getstring);
                         temp.push_back(posi.at(i));
                         functionLine f = functionLine(std::vector<vertex>(), temp, getstring);
                         fun.insert(std::pair<std::string,functionLine>(getstring,f));
@@ -547,6 +581,7 @@ void readInput(std::string file) {
                     for (int i = 0; i < neg.size(); i++) {
                         std::vector<vertex> temp;
                         std::string getstring = getString(line);
+                        nodesS.insert(getstring);
                         temp.push_back(neg.at(i));
                         functionLine f = functionLine(temp, std::vector<vertex>(), getstring);
                         fun.insert(std::pair<std::string,functionLine>(getstring,f));
@@ -570,7 +605,7 @@ void readInput(std::string file) {
 void generateEncoding(std::string r,std::string model,std::string obs) {
     std::string comand = "./clingo --opt-mode=optN -c repair=" + r;
     if(asy){
-        comand += " ASP/configA.gringo ASP/asy.lp ";
+        comand += " ASP/configA.gringo ASP/core.lp ";
 
     } else {
         comand +=  " ASP/config.gringo ASP/core.lp ";
@@ -578,13 +613,74 @@ void generateEncoding(std::string r,std::string model,std::string obs) {
     }
     if(stdy)
         comand += " ASP/steady.lp ";
-    std::cout<<model<<" "<<obs<<"\n";
+//    std::cout<<model<<" "<<obs<<"\n";
+
+    if(flag){
+
+
+        comand += " "+outnode+".lp ";
+	}
+    std::cout<<outnode<<std::endl;
     comand = comand + model + " " + obs;
     comand += ">" + outfile;
-
 
     std::system(comand.c_str());
 
 
 }
 
+void readNodes(std::string file){
+    std::ifstream myfile;
+    std::string line;
+
+    myfile.open (file);
+
+
+
+    if (!myfile.is_open()) return;
+    std::ofstream outfile (outnode+".lp");
+
+
+
+    std::string word;
+    while (myfile >> word) {
+        outfile << "repairable(" + getString(word) + ")." << std::endl;
+
+    }
+
+    outfile.close();
+
+
+
+}
+void randomA(){
+    unsigned int t =std::chrono::steady_clock::now().time_since_epoch().count();
+    std::ofstream out;
+
+    out.open("seed.txt", std::ios::app);
+
+
+    out << t<<std::endl;
+
+    std::default_random_engine generator(t);
+    std::uniform_int_distribution<int> distribution(0,nodesS.size()-1);
+    std::set<int> number;
+    int n=0;
+
+    for(; number.size()< floor(0.50*nodesS.size());){
+        n=distribution(generator);
+        number.insert(n);
+
+
+
+    }
+    int i=0;
+    for(std::string s : nodesS) {
+        if(number.find(i)!=number.end())
+            std::cout<<s<<std::endl;
+        i++;
+    }
+
+
+
+}

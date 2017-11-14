@@ -1,7 +1,8 @@
 #include <incmode>.
 
 #program base.
-
+isRepair(U):-vertex(U), not repairable(_), not isTemp(U,_).
+isRepair(U):-repairable(U), not isTemp(U,_).
 timeStep(T):-obs_vlabel(_,_,_,T).
 vertex(V,0):-edge(V,_,0).
 vertex(V,0):-edge(_,V,0).
@@ -103,24 +104,24 @@ repairSign1(P,U,S,t) :- repair_functionNot(N,U,_), functionNot(N,U,_),isRegulato
 
 
 %Possible repairs
-pos(functionOr(N,O,0),t) :-   repair_g, not nonePositive(O,N,P,t),not functionOr(N,O,0),functionAnd(N,O,0),exp(P),plusinfluence(O,t),timeStep(TI).
-pos(functionOr(N,O,0),t) :-   repair_g, nonePositive(O,N,P,t),not functionOr(N,O,0),functionAnd(N,O,0),plusinfluence(O,t).
+pos(functionOr(N,O,0),t) :-   repair_g, not nonePositive(O,N,P,t),not functionOr(N,O,0),functionAnd(N,O,0),exp(P),plusinfluence(O,t),timeStep(TI),isRepair(O).
+pos(functionOr(N,O,0),t) :-   repair_g, nonePositive(O,N,P,t),not functionOr(N,O,0),functionAnd(N,O,0),plusinfluence(O,t),isRepair(O).
 
-pos(functionAnd(N,O,0),t) :-  repair_g, noneNegative(O,N,P,t),not functionAnd(N,O,0),functionOr(N,O,0),plusinfluence(O,t).
-pos(functionAnd(N,O,0),t) :-  repair_g, not noneNegative(O,N,P,t),not functionAnd(N,O,0),functionOr(N,O,0),exp(P),plusinfluence(O,t),timeStep(TI).
+pos(functionAnd(N,O,0),t) :-  repair_g, noneNegative(O,N,P,t),not functionAnd(N,O,0),functionOr(N,O,0),plusinfluence(O,t),isRepair(O).
+pos(functionAnd(N,O,0),t) :-  repair_g, not noneNegative(O,N,P,t),not functionAnd(N,O,0),functionOr(N,O,0),exp(P),plusinfluence(O,t),timeStep(TI),isRepair(O).
 
 plusinfluence(O,t):- edge(V,O,_), edge(W,O,_), W!=O,W!=V,V!=O, not repair(rEdge(V,O),_), not repair(rEdge(W,O),_),not removeEdge(V,O,_),not removeEdge(W,O,_).
 
 
 :-vertex(U,_),plusinfluence(U,0), not plusinfluence(U,t).
-pos(rEdge(U,V),t) :- repair_e, regulator(N,U), function(N,V,_), regulator(N,W), not removeEdge(W,V,_),not isTemp(V,_), not isTemp(U,_).
-pos(rEdge(U,D),t) :- repair_e, regulator(N,U), regulator(N,W), function(N,V,_),isTemp(V,_),isFunction(V,D), not isTemp(D,_), not isTemp(U,_).
+pos(rEdge(U,V),t) :- repair_e, regulator(N,U), function(N,V,_), regulator(N,W), not removeEdge(W,V,_),not isTemp(V,_), not isTemp(U,_),isRepair(O).
+pos(rEdge(U,D),t) :- repair_e, regulator(N,U), regulator(N,W), function(N,V,_),isTemp(V,_),isFunction(V,D), not isTemp(D,_), not isTemp(U,_),isRepair(O).
 removeEdge(U,W,t):-repair(rEdge(U,D),t),regulator(N,U), function(N,W,_), isTemp(W,_),isFunction(W,D), not isTemp(D,_).
 removeEdge(U,D,t):-repair(rEdge(U,D),t),regulator(N,U), function(N,D,_),regulator(N,W), not removeEdge(W,D,_), not isTemp(D,_).
 removeEdge(W,D,t):-removeEdge(U,W,_),regulator(N,U),functionU(N,W,_),regulator(M,W),function(M,D,_),D!=U,W!=D,M!=N.
 
-pos(regulator(O,V),t):- repair_i, regulator(N,V), function(N,O,_), not isTemp(O,_), not isTemp(V,_),not removeRegulator(N,V,_).
-pos(regulator(O,V),t):- repair_i, regulator(N,V), function(N,W,_), isTemp(W,_),isFunction(W,O), not isTemp(O,_), not isTemp(V,_),not removeRegulator(N,V,_).
+pos(regulator(O,V),t):- repair_i, regulator(N,V), function(N,O,_), not isTemp(O,_), not isTemp(V,_),not removeRegulator(N,V,_),isRepair(O).
+pos(regulator(O,V),t):- repair_i, regulator(N,V), function(N,W,_), isTemp(W,_),isFunction(W,O), not isTemp(O,_), not isTemp(V,_),not removeRegulator(N,V,_),isRepair(O).
 
 
 repaired(N,V,t):- repair(regulator(O,V),_),regulator(N,V), function(N,W,_), isTemp(W,_),isFunction(W,O), not isTemp(O,_).
