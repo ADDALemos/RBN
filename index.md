@@ -36,7 +36,7 @@ Some examples with small networks are available in the folder: `examples/steady/
 
 ### Model
 
-The model has to be encoded in Boolsim ([format](http://www.colomoto.org/formats/boolsim.html)). 
+The model has to be encoded in boolSim ([format](http://www.colomoto.org/formats/boolsim.html)). 
 
 ### Experimental values
 
