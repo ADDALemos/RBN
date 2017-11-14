@@ -1,5 +1,8 @@
 *.idea
 *~
+*.out
+*.obs.lp
+*.net.lp
 # Compiled Object files
 *.slo
 *.lo
