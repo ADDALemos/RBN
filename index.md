@@ -53,7 +53,7 @@ An ASP solver (contained in the source folder) and available at:
 
 [clingo](https://github.com/potassco/clingo)
 
-Uses the Quince McCluskey algorithm available at:
+Uses the Quine McCluskey algorithm available at:
 
 [Quine-McCluskey](https://github.com/pfpacket/Quine-McCluskey) (to compile requires the Boost C++ Libraries) [boost.org](http://www.boost.org/)
 
