@@ -1,14 +1,10 @@
 # Abstract 
 ***
-Boolean logical models of biological regulatory and signalling networks are increasingly used to formally describe and understand complex biological processes.
-Such models often need to be repaired whenever new observations become available, rendering the model inconsistent with the new observations.
-Although many studies have focuses on inferring new models (or classes of models) from data, the automation of model repair is still in its infancy, often still being a manual process and therefore prone to errors.
+*Background:* Boolean models of biological signalling-regulatory networks are increasingly used to formally describe and understand complex biological processes. These models may become inconsistent as new data becomes available and need to be repaired. In the past, the focus has been shed on the inference of (classes of) models given an interaction network and time-series data sets. However, repair of existing models against new data is still in its infancy, where the process is still manually performed and therefore slow and prone to errors.
 
-In this work, a tool is provided to suggest possible repair operations to inconsistent models based on changing the model logical functions.
-The tool uses Answer Set Programming to identify possible repair operations to the models following both synchronous or asynchronous updating schemes. 
+*Results:* In this work, we propose a method with an associated tool to suggest repairs over inconsistent Boolean models, based on a set of atomic repair operations. Answer Set Programming is used to encode the minimal repair problem as a combinatorial optimization problem. In particular, given an inconsistent model, the tool provides the minimal repairs that render the model capable of generating dynamics coherent with a (set of) time-series data set(s), considering either a synchronous or an asynchronous updating scheme.
 
-The tool was validated using both Boolean models of randomly generated networks and data sets of Escherichia coli at steady state.
-The limitations of the implemented tool for each of the updating schemes are discussed. The impact of the minimization algorithm is also addressed.
+*Conclusions:* The method was validated using known biological models from different species, as well as synthetic models obtained from randomly generated networks. We discuss the method’s limitations regarding each of the updating schemes and the considered minimization algorithm.
 
 ***
 
