@@ -10,7 +10,7 @@
 
 # How to run the project
 
-`./Converter type [asynchronous|synchronous|steady_state] repair[e|i|g|combinations] examples/Model.net [examples/Obs1.obs examples/Obsn.obs] [-n repairableNodes]`
+`./Converter type [asynchronous|synchronous|steady_state] repair[r|n|s|combinations] examples/Model.net [examples/Obs1.obs examples/Obsn.obs] [-n repairableNodes]`
 
 This will generate the repair models in the examples folder.
 
@@ -22,9 +22,9 @@ If the model is asynchronous, synchronous or is in steady state.
 
 ### Available repair operations:
 
-* Repair e - removes regulator
-* Repair i - negates a regulator
-* Repair g - changes AND function to OR function
+* Repair r - removes regulator
+* Repair n - negates a regulator
+* Repair s - changes AND function to OR function
 
 Note: All the combinations of repairs are allowed, and they need to be written in alphabetical order.
 
