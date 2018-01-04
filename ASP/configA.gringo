@@ -3,80 +3,38 @@
 % Configure repairs.
 % Multiple repairs by combining the values in alphabetical order to 
 % Possible values include:
-%   'e' : remove edges
-%   'g' : flip gate
-%   'n' : nand and nor
-%	'i' : negate input of functions
+%   'r' : remove edges
+%   's' : flip sate
+%   'n' : negate regulator
 
 %t_a :- time == asynchronous.
 %t_s :- time == synchronous.
 %t_a :- time == "asynchronous".
 %t_s :- time == "synchronous".
 
-repair_e :- repair == e.
-repair_e :- repair == eg.
-repair_e :- repair == ei.
-repair_e :- repair == en.
-repair_e :- repair == egi.
-repair_e :- repair == egn.
-repair_e :- repair == ein.
-repair_e :- repair == egin.
-repair_e :- repair == "e".
-repair_e :- repair == "eg".
-repair_e :- repair == "ei".
-repair_e :- repair == "en".
-repair_e :- repair == "egi".
-repair_e :- repair == "egn".
-repair_e :- repair == "ein".
-repair_e :- repair == "egin".
+repair_r :- repair == r.
+repair_r :- repair == nr.
+repair_r :- repair == rs.
+repair_r :- repair == nrs.
+repair_r :- repair == "r".
+repair_r :- repair == "nr".
+repair_r :- repair == "rs".
+repair_r :- repair == "nrs".
 
-repair_g :- repair == g.
-repair_g :- repair == eg.
-repair_g :- repair == gi.
-repair_g :- repair == gn.
-repair_g :- repair == egi.
-repair_g :- repair == egn.
-repair_g :- repair == gin.
-repair_g :- repair == egin.
-repair_g :- repair == "g".
-repair_g :- repair == "eg".
-repair_g :- repair == "gi".
-repair_g :- repair == "gn".
-repair_g :- repair == "gin".
-repair_g :- repair == "egi".
-repair_g :- repair == "egn".
-repair_g :- repair == "gin".
-
-repair_i :- repair == i.
-repair_i :- repair == ei.
-repair_i :- repair == gi.
-repair_i :- repair == in.
-repair_i :- repair == egi.
-repair_i :- repair == ein.
-repair_i :- repair == gin.
-repair_i :- repair == egin.
-repair_i :- repair == "i".
-repair_i :- repair == "ei".
-repair_i :- repair == "gi".
-repair_i :- repair == "in".
-repair_i :- repair == "egi".
-repair_i :- repair == "ein".
-repair_i :- repair == "gin".
-repair_i :- repair == "egin".
+repair_s :- repair == s.
+repair_s :- repair == nr.
+repair_s :- repair == ns.
+repair_s :- repair == nrs.
+repair_s :- repair == "s".
+repair_s :- repair == "nr".
+repair_s :- repair == "ns".
+repair_s :- repair == "nrs".
 
 repair_n :- repair == n.
-repair_n :- repair == en.
-repair_n :- repair == gn.
-repair_n :- repair == in.
-repair_n :- repair == egn.
-repair_n :- repair == ein.
-repair_n :- repair == gin.
-repair_n :- repair == egin.
+repair_n :- repair == rs.
+repair_n :- repair == ns.
+repair_n :- repair == nrs.
 repair_n :- repair == "n".
-repair_n :- repair == "en".
-repair_n :- repair == "gn".
-repair_n :- repair == "in".
-repair_n :- repair == "egn".
-repair_n :- repair == "ein".
-repair_n :- repair == "gin".
-repair_n :- repair == "egin".
+repair_n :- repair == "rs".
+repair_n :- repair == "ns".
+repair_n :- repair == "nrs".
