@@ -353,8 +353,8 @@ void sortFunction(std::string file) {
 }
 
 bool isRepair(std::string repair) {
-    if (!repair.compare("e")||!repair.compare("i")||!repair.compare("g")||!repair.compare("eg")||!repair.compare("ei")||
-        !repair.compare("gi")||!repair.compare("egi")){
+    if (!repair.compare("r")||!repair.compare("n")||!repair.compare("s")||!repair.compare("nr")||!repair.compare("rs")||
+        !repair.compare("ns")||!repair.compare("nrs")){
         return true;
     }
     return false;
@@ -362,8 +362,8 @@ bool isRepair(std::string repair) {
 
 void help() {
     std::cout << "For help press h\n Run the program like ./program [A]Synchronous/Steady Active_Repair Moldel.net [optional] Obs1 .. Obs2 [optional] -n List of Nodes\n"
-            "The Active_Repair can be e - for removing edges; g - for changing a function AND/OR;"
-            " i - for negating a regulator; All possible combination. (in Alphabetical order)\n "
+            "The Active_Repair can be r - for removing edges; s - for changing a function AND/OR;"
+            " n - for negating a regulator; All possible combination. (in Alphabetical order)\n "
             "The model has to be encoded in the Boolsim format\n"
             "The list of nodes where repair operations can be applied. A file with the nodes separated by a space\n";
     std::exit(0);
