@@ -114,8 +114,8 @@ plusinfluence(O,t):- edge(V,O,_), edge(W,O,_), W!=O,W!=V,V!=O, not repair(rEdge(
 
 
 :-vertex(U,_),plusinfluence(U,0), not plusinfluence(U,t).
-pos(rEdge(U,V),t) :- repair_e, regulator(N,U), function(N,V,_), regulator(N,W), not removeEdge(W,V,_),not isTemp(V,_), not isTemp(U,_),isRepair(O).
-pos(rEdge(U,D),t) :- repair_e, regulator(N,U), regulator(N,W), function(N,V,_),isTemp(V,_),isFunction(V,D), not isTemp(D,_), not isTemp(U,_),isRepair(O).
+pos(rEdge(U,V),t) :- repair_e, regulator(N,U), function(N,V,_), regulator(N,W), not removeEdge(W,V,_),not isTemp(V,_), not isTemp(U,_),isRepair(V).
+pos(rEdge(U,D),t) :- repair_e, regulator(N,U), regulator(N,W), function(N,V,_),isTemp(V,_),isFunction(V,D), not isTemp(D,_), not isTemp(U,_),isRepair(D).
 removeEdge(U,W,t):-repair(rEdge(U,D),t),regulator(N,U), function(N,W,_), isTemp(W,_),isFunction(W,D), not isTemp(D,_).
 removeEdge(U,D,t):-repair(rEdge(U,D),t),regulator(N,U), function(N,D,_),regulator(N,W), not removeEdge(W,D,_), not isTemp(D,_).
 removeEdge(W,D,t):-removeEdge(U,W,_),regulator(N,U),functionU(N,W,_),regulator(M,W),function(M,D,_),D!=U,W!=D,M!=N.
