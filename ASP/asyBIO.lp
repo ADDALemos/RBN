@@ -138,7 +138,7 @@ repair_functionNot(N,V,t):-functionNot(N,V,_), repaired(N,W,_),regulator(N,W).
 :-visit(P,V,TS,t),visit(P,V,TS,T),T!=t.
 :-visit(P,V,TS,t), not visit(P,V,TS-1,_),timeStep(TS),timeStep(TS-1).
 :-not consistentFunction(P,O,t),visit(P,O,_,t), not input(P,O),t!=1.
-:-not consistentFunction(P,O,t),vertex(O,T),isTemp(O,_),t!=1,exp(P), not input(P,O),timeStep(t),isVisited(N,O,_),function(N,_,_).
+:-not consistentFunction(P,O,t),vertex(O,_),isTemp(O,_),t!=1,exp(P), not input(P,O),isVisited(P,O,_).
 %infl(V,t):-visit(P,V,0,t),edge(A,V,_),not isV(P,A,t-1).
 :-visit(P,V,TS,t),edge(A,V,_),not isV(P,A,t-1),TS!=0.
 max(3).
