@@ -32,20 +32,22 @@ current_vlabel(P,O,0,t):- isVisited(P,O,_),functionAnd(O,_),isTemp(O,_), not non
 current_vlabel(P,O,1,t):- isVisited(P,O,_),functionOr(O,_),isTemp(O,_),not nonePositive(O,P,t), vertex(O,_), exp(P),timeStep(TI), not repairSign(P,O,_,t).
 current_vlabel(P,O,0,t):- isVisited(P,O,_),functionOr(O,_),isTemp(O,_),nonePositive(O,P,t), vertex(O,_), exp(P), not repairSign(P,O,_,t).
 
-current_vlabel(P,O,S,t):- isVisited(P,O,_),functionNot(O,_),isTemp(O,_), regulatorSign(P,V,T, t), complement(S,T),vertex(O,_), exp(P), not removeRegulator(N,V,_), not repairSign(P,O,_,t).
-current_vlabel(P,O,S,t):- isVisited(P,O,_),functionId(O,_),isTemp(O,_), regulatorSign(P,V,S,t), vertex(O,_), exp(P), not removeRegulator(N,V,_), not repairSign(P,O,_,t).
+current_vlabel(P,O,S,t):- isVisited(P,O,_),functionNot(O,_),isTemp(O,_), regulatorSign(P,V,T, t), complement(S,T),vertex(O,_), exp(P), not removeRegulator(O,V,_), not repairSign(P,O,_,t).
+current_vlabel(P,O,S,t):- isVisited(P,O,_),functionId(O,_),isTemp(O,_), regulatorSign(P,V,S,t), vertex(O,_), exp(P), not removeRegulator(O,V,_), not repairSign(P,O,_,t).
 
 current_vlabel(P,O,1,t) :- isVisited(P,O,_),not function(_,O,_),isTemp(O,_),vertex(O,_), exp(P), not current_vlabel(P,O,0,t),timeStep(TI), not repairSign(P,O,_,t).
 current_vlabel(P,O,0,t) :- isVisited(P,O,_),not function(_,O,_),isTemp(O,_),vertex(O,_), exp(P), not current_vlabel(P,O,1,t),timeStep(TI), not repairSign(P,O,_,t),function(_,F),not consistentFunction(P,F,t).
 
 current_vlabel(P,O,1,t) :- isVisited(P,N,_),vertex(O,_),isTemp(O,_), exp(P), not current_vlabel(P,O,0,t), not repairSign(P,O,_,t).
-current_vlabel(P,O,0,t) :- isVisited(P,N,_),vertex(O,_),isTemp(O,_), exp(P), not current_vlabel(P,O,1,t), not repairSign(P,O,_,t),function(_,F),not consistentFunction(P,F,t).
+current_vlabel(P,O,0,t) :- isVisited(P,N,_),vertex(O,_),isTemp(O,_), exp(P), not current_vlabel(P,O,1,t), not repairSign(P,O,_,t),function(F,_),not consistentFunction(P,F,t).
 current_vlabel(P,O,S,t):- repairSign(P,O,S,t).
 :-vlabel(P,V,S,TS,t),obs_vlabel(P,V,T,TS), complement(S,T).
 
 current_vlabel(P,V,S,t):-T=#max{TS:visit(P,V,TS,_)},vlabel(P,V,S,T,_),not isTemp(V,_).
 
 %current_vlabel(P,V,S,t):-visit(P,V,TS,t),vlabel(P,V,S,TS,_),not isTemp(V,_).
+
+
 
 isTemp(temporary(V),t):-vertex(temporary(V),t).
 function(V,t) :- functionOr(V,t).
