@@ -86,9 +86,13 @@ void functionMain::minimize(bool asy) {
     outfile.open(file+".lp", std::ios_base::app);
 
     if(f.size()>1) {
+        std::string name="";
+        for (int i = 0; i < l.size() ; ++i) {
+            name+=l[i].functionName();
+        }
         tempN++;
         if (asy)
-            outfile << "functionOr(" << tempN << "," << dest.getName() << ",0).\n";
+            outfile << "functionOr("  << dest.getName() << ").\n";
         else
             outfile << "functionOr(" << tempN << "," << dest.getName() << ").\n";
     }

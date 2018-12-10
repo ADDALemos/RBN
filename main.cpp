@@ -605,7 +605,7 @@ void readInput(std::string file) {
 void generateEncoding(std::string r,std::string model,std::string obs) {
     std::string comand = "./clingo --opt-mode=optN -c repair=" + r;
     if(asy){
-        comand += " ASP/configA.gringo ASP/core.lp ";
+        comand += " ASP/asynchronous/incremental/config.gringo ASP/asynchronous/incremental/core.lp ";
 
     } else {
         comand +=  " ASP/config.gringo ASP/core.lp ";
