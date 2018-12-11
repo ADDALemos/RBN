@@ -19,21 +19,21 @@ function(V) :- functionNot(V).
 1{visit(P,V,TS,t): node(V),timeStep(TS),exp(P)}1.
 
 
-current_vlabel(P,O,t):- visit(P,O,_,t),functionAnd(O), noneNegative(P,O,t-1), node(O), exp(P), not repair(functionAnd(O),_), t>1.
+current_vlabel(P,O,t):- visit(P,O,_,t),functionAnd(O), noneNegative(P,O,t-1), not repair(functionAnd(O),_), t>1.
 
-current_vlabel(P,O,t):- visit(P,O,_,t),functionOr(O),not nonePositive(P,O,t-1), node(O), exp(P),timeStep(TI), t>1, not repair(functionOr(O),_).
+current_vlabel(P,O,t):- visit(P,O,_,t),functionOr(O),not nonePositive(P,O,t-1), t>1, not repair(functionOr(O),_).
 
-current_vlabel(P,O,t):- visit(P,O,_,t),functionId(O),oneSign(P,V,1,t-1), node(O), t>1, exp(P).
+current_vlabel(P,O,t):- visit(P,O,_,t),functionId(O),oneSign(P,V,1,t-1), t>1.
 
-current_vlabel(P,O,t):- visit(P,O,_,t), t>1,input(O),node(O), exp(P), current_vlabel(P,O,t-1).
+current_vlabel(P,O,t):- visit(P,O,_,t), t>1,input(O), current_vlabel(P,O,t-1).
 
-current_vlabel(P,O,t):- not visit(P,O,_,t), current_vlabel(P,O,t-1), t>1, node(O).
+current_vlabel(P,O,t):- not visit(P,O,_,t), current_vlabel(P,O,t-1), t>1.
 
-{current_vlabel(P,O,1)}:- visit(P,O,_,t),node(O),t=1.
+{current_vlabel(P,O,1)}:- visit(P,O,_,t),t=1.
 
 current_vlabel(P,O,t):- not node(O),functionAnd(O), noneNegative(P,O,t),not repair(functionAnd(O),_).
 current_vlabel(P,O,t):- not node(O), exp(P),functionOr(O),not nonePositive(P,O,t),not repair(functionOr(O),_).
-current_vlabel(P,O,t):- not node(O),functionId(O), oneSign(P,V,1,t), exp(P).
+current_vlabel(P,O,t):- not node(O),functionId(O), oneSign(P,O,1,t), exp(P).
 
 :-visit(P,O,TS,t),current_vlabel(P,O,t),obs_vlabel(P,V,0,TS), node(O).
 :-visit(P,O,TS,t),not current_vlabel(P,O,t),obs_vlabel(P,V,1,TS), node(O).
