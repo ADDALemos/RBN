@@ -16,11 +16,11 @@ node(b).timeStep(1).exp(p).timeStep(2).
 1{visit(P,V,TS,t): node(V),timeStep(TS),exp(P)}1.
 
 
-current_vlabel(P,O,t):- visit(P,O,_,t),has_function(O,1,t), noneNegative(P,O,t-1), t>1.
+current_vlabel(P,O,t):- visit(P,O,_,t),function(O,1,t), noneNegative(P,O,t-1), t>1,not repair(function(O,_),_).
 
-current_vlabel(P,O,t):- visit(P,O,_,t),has_function(O,0,t),not nonePositive(P,O,t-1), t>1.
+current_vlabel(P,O,t):- visit(P,O,_,t),function(O,0,t),not nonePositive(P,O,t-1), t>1,not repair(function(O,_),_).
 
-current_vlabel(P,O,t):- visit(P,O,_,t),has_function(O,3,t),oneSign(P,V,1,t-1), t>1.
+current_vlabel(P,O,t):- visit(P,O,_,t),function(O,3,t),oneSign(P,V,1,t-1), t>1.
 
 current_vlabel(P,O,t):- visit(P,O,_,t), t>1,input(O), current_vlabel(P,O,t-1).
 
@@ -28,9 +28,9 @@ current_vlabel(P,O,t):- not visit(P,O,_,t), current_vlabel(P,O,t-1), t>1.
 
 {current_vlabel(P,O,1)}:- visit(P,O,_,t),t=1.
 
-current_vlabel(P,O,t):- not node(O),has_function(O,1,t), noneNegative(P,O,t).
-current_vlabel(P,O,t):- not node(O),exp(P),has_function(O,0,t),not nonePositive(P,O,t).
-current_vlabel(P,O,t):- not node(O),has_function(N,2,t), oneSign(P,O,1,t), exp(P).
+current_vlabel(P,O,t):- not node(O),function(O,1,t), noneNegative(P,O,t),not repair(function(O,_),_).
+current_vlabel(P,O,t):- not node(O),exp(P),function(O,0,t),not nonePositive(P,O,t), not repair(function(O,_),_).
+current_vlabel(P,O,t):- not node(O),function(N,2,t), oneSign(P,O,1,t), exp(P).
 
 :-visit(P,O,TS,t),current_vlabel(P,O,t),obs_vlabel(P,V,0,TS).
 :-visit(P,O,TS,t),not current_vlabel(P,O,t),obs_vlabel(P,V,1,TS).
@@ -51,8 +51,7 @@ oneSign(P,V,0,t):- function(V,_),has_influence(V,U,0,_), current_vlabel(P,U,t).
 
 :-node(U),not has_regulator(U,_,t), not input(U).
 
-has_function(N,S,t)      :- function(N,S), not repair(function(N,S),_),S<2.
-has_function(N,1-S,t)    :- repair(function(N,S),_),S<2.
+function(N,1-S,t)    :- repair(function(N,S),_),S<2.
 has_regulator(N,M,t)     :- regulator(N,M,_), not repair(removeRegulator(N,M),t).
 has_influence(N,M,1-X,t) :- regulator(N,M,X), has_regulator(N,M,_), repair(negRegulator(N,M),t).
 has_influence(N,M,X,t)   :- regulator(N,M,X), has_regulator(N,M,_), not repair(negRegulator(N,M),t).
