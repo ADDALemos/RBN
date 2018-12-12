@@ -7,7 +7,8 @@ can_repair(U):-repairable(U).
 timeStep(T):-obs_vlabel(_,_,_,T).
 
 input(V) :- node(V), not function(V,_).
-
+function(b,0). regulator(b,b,1).
+node(b).timeStep(1).exp(p).timeStep(2).
 #program step(t).
 1{visit(P,V,TS,t): node(V),timeStep(TS),exp(P)}1.
 
@@ -24,9 +25,10 @@ current_vlabel(P,O,t):- not visit(P,O,_,t), current_vlabel(P,O,t-1), t>1.
 
 {current_vlabel(P,O,1)}:- visit(P,O,_,t),t=1.
 
-current_vlabel(P,O,t):- not node(O),has_function(O,1,t), noneNegative(P,O,t),not repair(function(O,1),_).
-current_vlabel(P,O,t):- not node(O),exp(P),has_function(O,0,t),not nonePositive(P,O,t), not repair(function(O,0),_).
-current_vlabel(P,O,t):- not node(O),has_function(N,2,t), oneSign(P,O,1,t), exp(P).
+current_vlabel(P,O,t):- not node(O),has_function(O,1,t), noneNegative(P,O,t),not repair(function(O,1),_),t>1.
+current_vlabel(P,O,t):- not node(O),exp(P),has_function(O,0,t),not nonePositive(P,O,t), not repair(function(O,0),_),t>1.
+current_vlabel(P,O,t):- not node(O),has_function(N,2,t), oneSign(P,O,1,t), exp(P),t>1.
+{current_vlabel(P,O,1)}:- not node(O),exp(P),has_function(O,_,t),t=1.
 
 :-visit(P,O,TS,t),current_vlabel(P,O,t),obs_vlabel(P,V,0,TS).
 :-visit(P,O,TS,t),not current_vlabel(P,O,t),obs_vlabel(P,V,1,TS).
