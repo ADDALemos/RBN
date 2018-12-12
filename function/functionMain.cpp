@@ -92,7 +92,7 @@ void functionMain::minimize(bool asy) {
         }
         tempN++;
         if (asy)
-            outfile << "functionOr("  << dest.getName() << ").\n";
+            outfile << "function("  << dest.getName() << ",0).\n";
         else
             outfile << "functionOr(" << tempN << "," << dest.getName() << ").\n";
     }

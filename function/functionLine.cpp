@@ -203,7 +203,7 @@ int functionLine::ASPUnary(std::string file, int  temp,bool asy) {
             //} else{
             if(asy){
 
-                outfile << "functionId(" << temp << "," << dest.getName() << ",0).\n";
+                outfile << "function(" << dest.getName() << ",2).\n";
                 outfile << "regulator(" << temp << "," << originPos[0].getName() << ",1).\n";
             }else{
                 outfile << "functionId(" << temp << "," << dest.getName() << ").\n";
@@ -246,7 +246,7 @@ int functionLine::ASPBinary(std::string file, int  temp,bool asy){
      outfile.open(file+".lp", std::ios_base::app);
     if(getTemp()) {
         if(asy)
-            outfile << "functionAnd(" << temp << ").\n";
+            outfile << "function(" << temp << ",1).\n";
         else
             outfile << "functionAnd(" << temp << ",temporary(t" << temp << ")).\n";
 
@@ -278,7 +278,7 @@ int functionLine::ASPBinary(std::string file, int  temp,bool asy){
         }
     } else{
         if(asy)
-            outfile << "functionAnd("  << dest.getName() << ").\n";
+            outfile << "function("  << dest.getName() << ",1).\n";
         else
             outfile << "functionAnd(" << temp << "," << dest.getName() << ").\n";
 
