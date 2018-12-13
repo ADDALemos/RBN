@@ -7,8 +7,7 @@ can_repair(U):-repairable(U).
 timeStep(T):-obs_vlabel(_,_,_,T).
 
 input(V) :- node(V), not function(V,_).
-function(b,0). regulator(b,b,1).
-node(b).timeStep(1).exp(p).timeStep(2).
+
 #program step(t).
 1{visit(P,V,TS,t): node(V),timeStep(TS),exp(P)}1.
 
@@ -79,7 +78,3 @@ max(3).
 %#show visit/4.
 
 #minimize { 1@1, R,T:repair(R,T) }.
-
-
-#program check(t).
-:-query(t),t!=2.%timeStep(S), not visit(_,W,S,_),node(W).
